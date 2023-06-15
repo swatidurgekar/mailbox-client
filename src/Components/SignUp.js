@@ -1,40 +1,74 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
 
 const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
+
+  const account = () => {
+    setIsLogin((prevState) => {
+      return !prevState;
+    });
+  };
 
   const submitHandler = async (event) => {
     event.preventDefault();
     const enteredEmail = email.current.value;
     const enteredPassword = password.current.value;
-    fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBDKpPV_JJK_GMvdVloHRyVu4G3Tjs2OaA",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      }
-    ).then((res) => {
-      if (res.ok) {
-        console.log("user has successfully signed up");
-      } else {
-        res.json().then((data) => {
-          alert(data.error.message);
-        });
-      }
-    });
+    if (!isLogin) {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBDKpPV_JJK_GMvdVloHRyVu4G3Tjs2OaA",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      ).then((res) => {
+        if (res.ok) {
+          console.log("user has successfully signed up");
+        } else {
+          res.json().then((data) => {
+            alert(data.error.message);
+          });
+        }
+      });
+    } else {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBDKpPV_JJK_GMvdVloHRyVu4G3Tjs2OaA",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: enteredEmail,
+            password: enteredPassword,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        }
+      ).then((res) => {
+        if (res.ok) {
+          res.json().then((data) => {
+            localStorage.setItem("idToken", data.idToken);
+            navigate("/welcome");
+          });
+        } else {
+          res.json().then((data) => alert(data.error.message));
+        }
+      });
+    }
   };
   return (
     <div>
@@ -63,7 +97,7 @@ const SignUp = () => {
         </Form>
       </div>
 
-      <Button variant="secondary" className="login-button">
+      <Button variant="secondary" className="login-button" onClick={account}>
         {isLogin && "Dont't have an account? SignUp"}
         {!isLogin && "Have an account? Login"}
       </Button>

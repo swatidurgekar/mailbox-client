@@ -62,6 +62,7 @@ const SignUp = () => {
         if (res.ok) {
           res.json().then((data) => {
             localStorage.setItem("idToken", data.idToken);
+            localStorage.setItem("email", data.email);
             navigate("/welcome");
           });
         } else {

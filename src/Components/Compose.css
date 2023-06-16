@@ -1,0 +1,20 @@
+.mail-form {
+  height: 90%;
+  width: 90%;
+  margin: auto auto;
+  border: 2px solid black;
+  padding: 15px;
+}
+
+.to-input {
+  border-radius: 25px;
+  margin-left: 5px;
+}
+
+.subject-input {
+  border: none;
+  width: 100%;
+}
+.subject-input:focus {
+  outline-width: 0;
+}

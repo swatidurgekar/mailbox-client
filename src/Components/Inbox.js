@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import "./Inbox.css";
 
 const Inbox = () => {
   const email = localStorage.getItem("email");
@@ -30,19 +32,16 @@ const Inbox = () => {
 
   return (
     <div>
+      <Sidebar />
       <h1>INBOX</h1>
       <hr />
       {inbox.map((mail) => {
         return (
-          <div key={mail.subject}>
-            <b>subject: </b>
-            {`${mail.subject}`}
-            <br />
-            <b>From: </b>
-            {mail.from}
-            <br />
-            <b>message: </b>
-            {mail.mail}
+          <div className="inbox">
+            <b>
+              <span className="from">{mail.from}</span>
+              <span>{mail.mail}</span>
+            </b>
             <hr />
           </div>
         );

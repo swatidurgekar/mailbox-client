@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import Sidebar from "./Sidebar";
+import "./SentBox.css";
 
 const SentBox = () => {
   const email = localStorage.getItem("email");
@@ -30,19 +32,16 @@ const SentBox = () => {
 
   return (
     <div>
+      <Sidebar />
       <h1>SENT</h1>
       <hr />
       {sent.map((mail) => {
         return (
-          <div key={mail.subject}>
-            <b>subject: </b>
-            {`${mail.subject}`}
-            <br />
-            <b>To: </b>
-            {mail.to}
-            <br />
-            <b>message: </b>
-            {mail.mail}
+          <div className="sent">
+            <b>
+              <span className="to">{mail.to}</span>
+              <span>{mail.mail}</span>
+            </b>
             <hr />
           </div>
         );

@@ -6,6 +6,7 @@ import Welcome from "./Components/Welcome";
 import Compose from "./Components/Compose";
 import SentBox from "./Components/SentBox";
 import Inbox from "./Components/Inbox";
+import ReadMessages from "./Components/ReadMessages";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/compose" element={<Compose />} />
           <Route path="/sent" element={<SentBox />} />
           <Route path="/inbox" element={<Inbox />} />
+          <Route path="/inbox/:mailId" element={<ReadMessages />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,0 +1,19 @@
+.read-mail {
+  height: 150px;
+  width: 50%;
+  border: 2px solid black;
+  margin: auto auto;
+  padding: 0;
+  margin-top: 30px;
+}
+.from {
+  margin-left: -10%;
+}
+.to {
+  margin-left: -12%;
+  bottom: 10rem;
+}
+.message {
+  margin-top: 20px;
+  margin-left: -50%;
+}

@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 
 const ReadMessages = () => {
   const params = useParams();
-  //   const mails = useSelector((state) => state.mails.recieved);
-  const mails = JSON.parse(localStorage.getItem("mails"));
-  console.log(mails);
+  const mails = useSelector((state) => state.mails.recieved);
+  // const mails = JSON.parse(localStorage.getItem("mails"));
   return (
     <div>
       {mails.map((mail) => {

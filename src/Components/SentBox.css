@@ -1,8 +1,13 @@
-.sent {
+.sentbox {
   height: 90%;
   width: 75%;
   margin-left: auto;
 }
 .to {
+  margin-left: 0%;
   margin-right: 35%;
+}
+.link {
+  text-decoration: none;
+  color: black;
 }

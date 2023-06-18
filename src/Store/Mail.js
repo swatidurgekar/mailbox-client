@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = { sent: [], recieved: [] };
 
 const mailSlice = createSlice({
@@ -13,11 +14,15 @@ const mailSlice = createSlice({
     },
     changeReadProperty(state, action) {
       const index = action.payload;
-      //   const newRecieved = [...state.recieved];
-      //   newRecieved[index].read = true;
-      //   state.recieved = newRecieved;
       state.recieved[index].read = true;
-      localStorage.setItem("inbox", JSON.stringify(state.recieved));
+    },
+    deleteMail(state, action) {
+      const index = action.payload;
+      state.recieved.splice(index, 1);
+    },
+    deleteSentMail(state, action) {
+      const index = action.payload;
+      state.sent.splice(index, 1);
     },
   },
 });

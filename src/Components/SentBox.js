@@ -1,41 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./SentBox.css";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { mailActions } from "../Store/Mail";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const SentBox = () => {
   const email = localStorage.getItem("email");
-
-  const [sent, setSent] = useState([]);
   const dispatch = useDispatch();
   const sentMails = useSelector((state) => state.mails.sent);
 
-  useEffect(() => {
-    const sentArr = [];
-    async function get() {
-      fetch(
-        "https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender.json"
-      ).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            if (data) {
-              const keys = Object.keys(data);
-
-              keys.map((item) => {
-                if (data[item].from === email) {
-                  sentArr.push(data[item]);
-                }
-              });
-              dispatch(mailActions.sendMail(sentArr));
-            }
-          });
+  const deleteMail = async (id, index) => {
+    const res = await fetch(
+      `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender.json`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const keys = Object.keys(data);
+      keys.map((key) => {
+        if (data[key].id === id) {
+          fetch(
+            `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender/${key}.json`,
+            { method: "DELETE" }
+          );
         }
       });
+      dispatch(mailActions.deleteSentMail(index));
     }
-
-    get();
-  }, []);
+  };
 
   return (
     <div>
@@ -43,12 +36,18 @@ const SentBox = () => {
       <h1>SENT</h1>
       <hr />
       {sentMails.map((mail) => {
+        const index = sentMails.indexOf(mail);
         return (
-          <div className="sent" key={mail.id}>
-            <b>
-              <span className="to">{mail.to}</span>
-              <span>{mail.mail}</span>
-            </b>
+          <div key={mail.id}>
+            <NavLink to={`/sentbox/${mail.id}`} className="link">
+              <div className="sentbox">
+                <b>
+                  <span className="to">{mail.to}</span>
+                  <span>{mail.mail}</span>
+                </b>
+              </div>
+            </NavLink>
+            <button onClick={() => deleteMail(mail.id, index)}>DELETE</button>
             <hr />
           </div>
         );

@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import Sidebar from "./Sidebar";
 import "./Inbox.css";
 import { mailActions } from "../Store/Mail";
@@ -6,17 +5,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const Inbox = () => {
-  const email = localStorage.getItem("email");
   const dispatch = useDispatch();
-  const [inbox, setInbox] = useState([]);
   const inboxMails = useSelector((state) => state.mails.recieved);
-  const localMails = JSON.parse(localStorage.getItem("inbox"));
-  let initial = useRef(false);
-  const mails = useSelector((state) => state.mails.recieved);
 
   const dispatchFunc = (id, index) => {
     let newid;
-    localStorage.setItem("mails", JSON.stringify(inboxMails));
     dispatch(mailActions.changeReadProperty(index));
     const obj = { ...inboxMails[index] };
     fetch(
@@ -49,29 +42,24 @@ const Inbox = () => {
     dispatchFunc(id, index);
   };
 
-  useEffect(() => {
-    const inboxArr = [];
-    async function get() {
-      await fetch(
-        "https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever.json"
-      ).then((res) => {
-        if (res.ok) {
-          res.json().then((data) => {
-            if (data) {
-              const keys = Object.keys(data);
-              keys.map((item) => {
-                if (data[item].to === email) {
-                  inboxArr.push(data[item]);
-                }
-              });
-              dispatch(mailActions.recieveMail(inboxArr));
-            }
-          });
+  const deleteMail = async (id, index) => {
+    const res = await fetch(
+      `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever.json`
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const keys = Object.keys(data);
+      keys.map((key) => {
+        if (data[key].id === id) {
+          fetch(
+            `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever/${key}.json`,
+            { method: "DELETE" }
+          );
         }
       });
+      dispatch(mailActions.deleteMail(index));
     }
-    get();
-  }, []);
+  };
 
   return (
     <div>
@@ -81,21 +69,23 @@ const Inbox = () => {
       {inboxMails.map((mail) => {
         const index = inboxMails.indexOf(mail);
         return (
-          <NavLink to={`/inbox/${mail.id}`} className="link" key={mail.id}>
-            <div className="inbox" onClick={() => read(mail.id, index)}>
-              <b>
-                {mail.read ? null : (
-                  <span>
-                    <div className="unread" />
-                  </span>
-                )}
-                <span className="from">{mail.from}</span>
-                <span>{mail.mail}</span>
-              </b>
-
-              <hr />
-            </div>
-          </NavLink>
+          <div key={mail.id}>
+            <NavLink to={`/inbox/${mail.id}`} className="link">
+              <div className="inbox" onClick={() => read(mail.id, index)}>
+                <b>
+                  {mail.read ? null : (
+                    <span>
+                      <div className="unread" />
+                    </span>
+                  )}
+                  <span className="from">{mail.from}</span>
+                  <span>{mail.mail}</span>
+                </b>
+              </div>
+            </NavLink>
+            <button onClick={() => deleteMail(mail.id, index)}>DELETE</button>
+            <hr />
+          </div>
         );
       })}
     </div>

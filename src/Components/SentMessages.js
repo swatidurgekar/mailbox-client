@@ -1,11 +1,10 @@
 import { useParams } from "react-router-dom";
-import "./ReadMessages.css";
 import { useSelector } from "react-redux";
 import Sidebar from "./Sidebar";
 
-const ReadMessages = () => {
+const SentMessages = () => {
   const params = useParams();
-  const mails = useSelector((state) => state.mails.recieved);
+  const mails = useSelector((state) => state.mails.sent);
   return (
     <div>
       <Sidebar />
@@ -26,5 +25,4 @@ const ReadMessages = () => {
     </div>
   );
 };
-
-export default ReadMessages;
+export default SentMessages;

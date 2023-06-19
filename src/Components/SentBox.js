@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { mailActions } from "../Store/Mail";
 import { NavLink } from "react-router-dom";
+import { BiTrash } from "react-icons/bi";
 
 const SentBox = () => {
   const email = localStorage.getItem("email");
@@ -47,7 +48,14 @@ const SentBox = () => {
                 </b>
               </div>
             </NavLink>
-            <button onClick={() => deleteMail(mail.id, index)}>DELETE</button>
+
+            <button
+              className="delete-btn"
+              onClick={() => deleteMail(mail.id, index)}
+            >
+              <BiTrash />
+            </button>
+
             <hr />
           </div>
         );

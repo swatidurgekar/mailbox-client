@@ -5,9 +5,18 @@
 }
 .to {
   margin-left: 0%;
-  margin-right: 35%;
+  margin-right: 25%;
 }
 .link {
   text-decoration: none;
   color: black;
+}
+.delete-btn {
+  margin-left: 35%;
+  margin-top: -2%;
+  background-color: white;
+  border: none;
+  color: red;
+  position: absolute;
+  font-size: x-large;
 }

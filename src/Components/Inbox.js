@@ -3,6 +3,7 @@ import "./Inbox.css";
 import { mailActions } from "../Store/Mail";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { BiTrash } from "react-icons/bi";
 
 const Inbox = () => {
   const dispatch = useDispatch();
@@ -83,7 +84,12 @@ const Inbox = () => {
                 </b>
               </div>
             </NavLink>
-            <button onClick={() => deleteMail(mail.id, index)}>DELETE</button>
+            <button
+              className="delete-btn"
+              onClick={() => deleteMail(mail.id, index)}
+            >
+              <BiTrash />
+            </button>
             <hr />
           </div>
         );

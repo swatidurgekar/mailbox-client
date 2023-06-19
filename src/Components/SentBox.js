@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./SentBox.css";
 import { useSelector } from "react-redux";
@@ -8,11 +7,11 @@ import { NavLink } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
 
 const SentBox = () => {
-  const email = localStorage.getItem("email");
   const dispatch = useDispatch();
   const sentMails = useSelector((state) => state.mails.sent);
 
   const deleteMail = async (id, index) => {
+    dispatch(mailActions.deleteSentMail(index));
     const res = await fetch(
       `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender.json`
     );
@@ -27,7 +26,6 @@ const SentBox = () => {
           );
         }
       });
-      dispatch(mailActions.deleteSentMail(index));
     }
   };
 

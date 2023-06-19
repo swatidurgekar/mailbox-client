@@ -7,6 +7,7 @@ import { mailActions } from "../Store/Mail";
 const Sidebar = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem("email");
+  const mails = useSelector((state) => state.mails.recieved);
 
   useEffect(() => {
     const getData = async () => {
@@ -48,8 +49,6 @@ const Sidebar = () => {
     };
     getData();
   }, [email, dispatch]);
-
-  const mails = useSelector((state) => state.mails.recieved);
 
   let sum = 0;
   mails.forEach((element) => {

@@ -44,6 +44,7 @@ const Inbox = () => {
   };
 
   const deleteMail = async (id, index) => {
+    dispatch(mailActions.deleteMail(index));
     const res = await fetch(
       `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever.json`
     );
@@ -58,7 +59,6 @@ const Inbox = () => {
           );
         }
       });
-      dispatch(mailActions.deleteMail(index));
     }
   };
 

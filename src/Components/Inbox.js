@@ -4,6 +4,8 @@ import { mailActions } from "../Store/Mail";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Inbox = () => {
   const dispatch = useDispatch();
@@ -50,15 +52,16 @@ const Inbox = () => {
     );
     if (res.ok) {
       const data = await res.json();
-      const keys = Object.keys(data);
-      keys.map((key) => {
-        if (data[key].id === id) {
-          fetch(
-            `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever/${key}.json`,
-            { method: "DELETE" }
-          );
-        }
-      });
+      if (data) {
+        const keys = Object.keys(data);
+        keys.map((key) => {
+          if (data[key].id === id) {
+            axios.delete(
+              `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/reciever/${key}.json`
+            );
+          }
+        });
+      }
     }
   };
 

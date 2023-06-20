@@ -5,10 +5,16 @@ import { useDispatch } from "react-redux";
 import { mailActions } from "../Store/Mail";
 import { NavLink } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
+import { useEffect } from "react";
+import SenderUseFetch from "./senderUseFetch";
 
 const SentBox = () => {
   const dispatch = useDispatch();
   const sentMails = useSelector((state) => state.mails.sent);
+  const email = localStorage.getItem("email");
+  const data = SenderUseFetch(
+    "https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender.json"
+  );
 
   const deleteMail = async (id, index) => {
     dispatch(mailActions.deleteSentMail(index));
@@ -17,15 +23,17 @@ const SentBox = () => {
     );
     if (res.ok) {
       const data = await res.json();
-      const keys = Object.keys(data);
-      keys.map((key) => {
-        if (data[key].id === id) {
-          fetch(
-            `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender/${key}.json`,
-            { method: "DELETE" }
-          );
-        }
-      });
+      if (data) {
+        const keys = Object.keys(data);
+        keys.map((key) => {
+          if (data[key].id === id) {
+            fetch(
+              `https://mailbox-client-d2bbf-default-rtdb.firebaseio.com/sender/${key}.json`,
+              { method: "DELETE" }
+            );
+          }
+        });
+      }
     }
   };
 

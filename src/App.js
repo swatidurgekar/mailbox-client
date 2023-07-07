@@ -12,8 +12,9 @@ import SentMessages from "./Components/SentMessages";
 function App() {
   return (
     <div className="App">
-      <NavbarComponent />
       <BrowserRouter>
+        <NavbarComponent />
+
         <Routes>
           <Route path="/" element={<SignUp />} />
           <Route path="/welcome" element={<Welcome />} />

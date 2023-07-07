@@ -16,4 +16,16 @@ describe("ReadMessages Component", () => {
     const message = screen.getByText("INBOX");
     expect(message).toBeInTheDocument();
   });
+
+  test("contain delete button", () => {
+    render(
+      <Provider store={Store}>
+        <BrowserRouter>
+          <Inbox />
+        </BrowserRouter>
+      </Provider>
+    );
+    const element = screen.getByRole("button");
+    expect(element).toBeInTheDocument();
+  });
 });

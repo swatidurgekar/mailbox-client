@@ -4,7 +4,7 @@ const Welcome = () => {
   return (
     <div>
       <Sidebar />
-      <p>Welcome to your mail box!!!</p>
+      <h5>Welcome to your mail box!!!</h5>
       <hr />
     </div>
   );

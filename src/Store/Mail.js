@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { sent: [], recieved: [] };
+const initialState = { isAuthenticated: false, sent: [], recieved: [] };
 
 const mailSlice = createSlice({
   name: "mail",
@@ -23,6 +23,9 @@ const mailSlice = createSlice({
     deleteSentMail(state, action) {
       const index = action.payload;
       state.sent.splice(index, 1);
+    },
+    manageAuthentication(state, action) {
+      state.isAuthenticated = action.payload;
     },
   },
 });

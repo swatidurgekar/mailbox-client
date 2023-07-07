@@ -8,8 +8,11 @@ import SentBox from "./Components/SentBox";
 import Inbox from "./Components/Inbox";
 import ReadMessages from "./Components/ReadMessages";
 import SentMessages from "./Components/SentMessages";
+import { useSelector } from "react-redux";
 
 function App() {
+  const isAuthenticated = useSelector((state) => state.mails.isAuthenticated);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -17,12 +20,16 @@ function App() {
 
         <Routes>
           <Route path="/" element={<SignUp />} />
-          <Route path="/welcome" element={<Welcome />} />
-          <Route path="/compose" element={<Compose />} />
-          <Route path="/sent" element={<SentBox />} />
-          <Route path="/inbox" element={<Inbox />} />
-          <Route path="/inbox/:mailId" element={<ReadMessages />} />
-          <Route path="/sentbox/:mailId" element={<SentMessages />} />
+          {isAuthenticated && <Route path="/welcome" element={<Welcome />} />}
+          {isAuthenticated && <Route path="/compose" element={<Compose />} />}
+          {isAuthenticated && <Route path="/sent" element={<SentBox />} />}
+          {isAuthenticated && <Route path="/inbox" element={<Inbox />} />}
+          {isAuthenticated && (
+            <Route path="/inbox/:mailId" element={<ReadMessages />} />
+          )}
+          {isAuthenticated && (
+            <Route path="/sentbox/:mailId" element={<SentMessages />} />
+          )}
         </Routes>
       </BrowserRouter>
     </div>

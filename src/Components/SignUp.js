@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SignUp.css";
+import { useDispatch } from "react-redux";
+import { mailActions } from "../Store/Mail";
 
 const SignUp = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -10,6 +12,7 @@ const SignUp = () => {
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
+  const dispatch = useDispatch();
 
   const account = () => {
     setIsLogin((prevState) => {
@@ -37,7 +40,8 @@ const SignUp = () => {
         }
       ).then((res) => {
         if (res.ok) {
-          console.log("user has successfully signed up");
+          navigate("/welcome");
+          dispatch(mailActions.manageAuthentication(true));
         } else {
           res.json().then((data) => {
             alert(data.error.message);
@@ -64,6 +68,7 @@ const SignUp = () => {
             localStorage.setItem("idToken", data.idToken);
             localStorage.setItem("email", data.email);
             navigate("/welcome");
+            dispatch(mailActions.manageAuthentication(true));
           });
         } else {
           res.json().then((data) => alert(data.error.message));

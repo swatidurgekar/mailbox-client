@@ -3,15 +3,18 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { useNavigate } from "react-router-dom";
 import Redirect from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { mailActions } from "../Store/Mail";
 
 const NavbarComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logout = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("idToken");
-    // return <Redirect to="/" replace='true'/>;
     navigate("/", { replace: true });
+    dispatch(mailActions.manageAuthentication(false));
   };
 
   return (

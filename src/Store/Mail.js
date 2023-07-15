@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+const bearerToken = localStorage.getItem("idToken");
+console.log(bearerToken);
 
-const initialState = { isAuthenticated: false, sent: [], recieved: [] };
+const initialState = {
+  isAuthenticated: !!bearerToken,
+  sent: [],
+  recieved: [],
+};
 
 const mailSlice = createSlice({
   name: "mail",
